@@ -59,7 +59,7 @@ $$
 
 The solution to the given problem can be expressed as $y(x) =\lambda y_1(x)+(1-\lambda)y_2(x)$ where $\lambda$ is a constant. This solution can be plotted to visualize the behavior of $y(x)$ and the corresponding error.
 
-![Model 1: The result of the Two-point Boundary Value Problem \$y'' = y'+2y+cos(x)\$](Math104%20B%20Final(1)/p1a.png)
+![Model 1: The result of the Two-point Boundary Value Problem \$y'' = y'+2y+cos(x)\$](images/p1a.png)
 
 Now, let's consider a Mixed boundary problem where the conditions are defined as $a_1y(x_1)+b_1 y'(x_1) = c_1$ and $a_2y(x_2)+b_2 y'(x_2) = c_2$, with constant values for $a_1,a_2,b_1,b_2,c_1,c_2$. The differential equation for the unknown $u(x)$ is:
 
@@ -105,7 +105,7 @@ $$
 \right. 
 $$
 
-![Model 2: The result of the Two-point Boundary Value Problem](Math104%20B%20Final(1)/p1b.png)
+![Model 2: The result of the Two-point Boundary Value Problem $-u '' + 3u' = x(1 - x)$](images/p1b.png)
 
 To solve the problem the Python solver ode45, we start with initial values $z_1 = 1.2$ and $z_2 = 0.7$ and the tolerance $10^{-9}$.
 
@@ -129,7 +129,7 @@ The exact solution for the two-point Boundary Value Problem is $y(x) = \ln(x)$.
 
 Additionally, we need to plot the solution of $y(x)$ and the error. Assuming an initial guess of $z_1 = 1$ and $z_2 = 0.5$, with a tolerance of $10^{-9}$, we only need to perform one iteration step to reach convergence.
 
-![](Math104%20B%20Final(1)/p2.png)
+![Model 3: The result of the Two-point Boundary Value Problem $y '' = (y')^2 - y + ln(x)$](images/p2.png)
 
 #### 5. Finite Difference Method
 
@@ -178,7 +178,7 @@ $$
 
 To visualize the solution of $y(x)$ and error $e(x)$ for $N = 10,20$. We can plot the graphs. It is evident that the error is smaller when $N=20$ compared to $N=10$.
 
-![Model 4: The result of Finite Difference Method](Math104%20B%20Final(1)/p3.png)
+![Model 4: The result of Finite Difference Method](images/p3.png){width="487"}
 
 #### 6. Conclusion
 
