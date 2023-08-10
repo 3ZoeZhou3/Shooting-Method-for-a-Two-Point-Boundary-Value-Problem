@@ -1,0 +1,185 @@
+---
+title: "Math 104B Final Project"
+author: "Zoe Zhou"
+date: "2023-06-13"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Shooting Method for a Two-Point Boundary Value Problem**
+
+#### 1. Inspiration
+
+Despite not having learned about the shooting method in our course, one of my groupmates expressed a keen interest in exploring this numerical technique for solving boundary value problems. Their enthusiasm and curiosity inspired me, and together, we decided to make the shooting method the topic of our project. We believe that delving into this method will not only expand our understanding of numerical methods but also provide us with an opportunity to explore a practical problem-solving approach. We are excited to embark on this project and uncover the intricacies of the shooting method while applying it to solve challenging boundary value problems.
+
+#### **2. The importance of the shooting method**
+
+In numerical analysis, the shooting method is employed to solve a boundary value problem by transforming it into an initial value problem system. To put it simply, trajectories are projected in different directions until a trajectory is found that satisfies the desired boundary condition. This process can be better understood through an illustration of the shooting method. Specifically, when dealing with a second-order ordinary differential equation in a boundary value problem, the method can be described as follows:
+
+Consider a boundary value problem:
+
+$$
+y''(x)=f(x,y(x),y'(x)),\quad y(x_{1})=y_{1},\quad y(x_{2})=y_{2}
+$$
+
+Let $y(x; a)$ represent the solution of the initial value problem:
+
+$$
+y''(x)=f(x,y(x),y'(x)),\quad y(x_{1})=y_{1},\quad y'(x_{1})=a
+$$
+
+Define the function $F(a)$ as the difference between $y(x2;a)$ and the specified boundary value $y1$:
+
+$$
+F(a)=y(x_{2};a)-y_{2}
+$$
+
+If $F$ has a root a, then the solution $y(x;a)$ of the corresponding initial value problem is also a solution of the boundary value problem. Conversely, if the boundary value problem has a solution $y(x)$, then $y(a)$ is also the unique solution $y(x; a)$ of the initial value problem where $a = y'(x2)$, making a a root of $F$. Common methods for finding roots, such as the bisection method or Newton's method, can be utilized here. Additionally, the finite difference method can be used to compute approximate solutions for Two-point Boundary Value Problems, which is a reliable and convergent approach.
+
+#### **3. Linear Shooting Method**
+
+Let's begin by considering the Dirichlet boundary, where the conditions are $y(x_1) = y_1$ and $y(x_2) = y_2$. We have the differential equation: $$y'' = y' + 2y + \cos(x), \text{ for } 0 \leq x \leq \frac{\pi}{2}$$
+
+With the boundary conditions $y(0) = -0.3, \quad y(\frac{\pi}{2}) = 0.1$, The exact solution to this Two-point Boundary Value Problem can be obtained using the method of undetermined coefficients, which yields $y(x) = -\cfrac{1}{10} \sin(x) - \cfrac{3}{10}\cos(x)$. To simplify the second-order differential equation, we can rewrite it as two first-order equations:$$\left\{   \begin{aligned}     {}& y'(x) = z, &{} & y(0) = -0.3 \\     {}& z'(x) = z+2y+\cos(x), &{} & z(0) = y'(0) = \alpha \\    \end{aligned}   \right. $$
+
+Using a Python solver, such as ode45, we can find the solution by providing initial guesses for $\alpha$. Let's assume$\alpha_1 = -1$ and $\alpha_2 = 0$. After running the code, the solution for the differential equations is obtained.
+
+$$
+y_1(\frac{\pi}{2}) = -6.9799 , y_2(\frac{\pi}{2}) = 0.6644
+$$
+
+Next, we compute $\lambda$:
+
+$$
+\lambda = \cfrac{y(\frac{\pi}{2})-y_2(\cfrac{\pi}{2})}{y_1(\cfrac{\pi}{2})-y_2(\cfrac{\pi}{2})} = 0.1, \alpha = -0.1
+$$
+
+The solution to the given problem can be expressed as $y(x) =\lambda y_1(x)+(1-\lambda)y_2(x)$ where $\lambda$ is a constant. This solution can be plotted to visualize the behavior of $y(x)$ and the corresponding error.
+
+![Model 1: The result of the Two-point Boundary Value Problem \$y'' = y'+2y+cos(x)\$](Math104%20B%20Final(1)/p1a.png)
+
+Now, let's consider a Mixed boundary problem where the conditions are defined as $a_1y(x_1)+b_1 y'(x_1) = c_1$ and $a_2y(x_2)+b_2 y'(x_2) = c_2$, with constant values for $a_1,a_2,b_1,b_2,c_1,c_2$. The differential equation for the unknown $u(x)$ is:
+
+$$
+-u'' + 3u' = x(1-x), \qquad u(0) = 0, \qquad u(1) + u'(1) = 1
+$$
+
+To simplify the second-order differential equation, we can rewrite it as a system of first-order differential equations:$$\left\{ 
+\begin{aligned}
+    {}& u'(x) &{}& = v, &{} & u(0) = 0 \\
+    {}& v'(x) &{}& = 3v-x(1-x), &{} & v(0) = u'(0) = \alpha \\
+\end{aligned}
+\right. $$
+
+Using the Python solver ode45, we can find the solution by providing initial guesses for $\alpha$. Let's assume $\alpha_1 = 0$ and $\alpha_2 = 1$. After running the code, the results for the equations are obtained as $u_1(1)+u_1'(1) = -0.3525 , u_2(1)+u_2'(1) = 4.1426.$ We can then compute $\lambda$:
+
+$$\lambda = \cfrac{1- 4.1426}{-0.3525 - 4.1426}= 0.69911, \alpha = 0.3009$$
+
+Thus, the solution to the problem is expressed as $u(x) =\lambda u_1(x)+(1-\lambda)u_2(x)$.
+
+Additionally, the exact solution for $u(x)$ is obtained as
+
+$$
+u(x) = -\cfrac{x^2}{3}+\cfrac{x}{3}-\cfrac{2}{9}+ \cfrac{2(-7+(\sqrt{3}+1)e^{\sqrt{3}})e^{-\sqrt{3}x+\sqrt{3}}+2(-1+\sqrt{3}+7e^{\sqrt{3}})e^{\sqrt{3}x}} {9(-1+\sqrt{3}+e^{2\sqrt{3}}+\sqrt{3}e^{2\sqrt{3}})}.
+$$
+
+#### 4. **Nonlinear Shooting Method**
+
+Consider the nonlinear differential equation:
+
+$$
+y'' = -(y')^2 - y + \ln(x) \quad 1 \le x \le 2, \quad y(1) = 0, \quad y(2) = \ln2.
+$$
+
+We can rewrite the problem as:
+
+$$
+\left\{ 
+\begin{aligned}
+    {}& y'(x) = z, &{} & y(1) = 0 \\
+    {}& z'(x) = -z^2-y+\ln(x), &{} & z(1) = y'(1) = z_0 \\
+\end{aligned}
+\right. 
+$$
+
+![Model 2: The result of the Two-point Boundary Value Problem](Math104%20B%20Final(1)/p1b.png)
+
+To solve the problem the Python solver ode45, we start with initial values $z_1 = 1.2$ and $z_2 = 0.7$ and the tolerance $10^{-9}$.
+
+The solution process is as follows:
+
+1.  Calculate the values $\phi_1 = \phi(z_1)$ and $\phi_2 = \phi(z_2)$, This function represents the relationship between the value$\tilde {y}(1)$ and $z$.
+
+2.  Use a secant step to compute the next value $z_3$ :
+
+    $$
+    z_3 = z_2+(y(1)-\phi_2)\frac{z_2-z_1}{\phi_2-\phi_1}.
+    $$
+
+3.  Iterate this process to obtain subsequent values $z_4$, $z_5$ and so on, until convergence is achieved:
+
+    $$
+    |\phi(z_n)-y(1)|<\rm{tol}.
+    $$
+
+The exact solution for the two-point Boundary Value Problem is $y(x) = \ln(x)$.
+
+Additionally, we need to plot the solution of $y(x)$ and the error. Assuming an initial guess of $z_1 = 1$ and $z_2 = 0.5$, with a tolerance of $10^{-9}$, we only need to perform one iteration step to reach convergence.
+
+![](Math104%20B%20Final(1)/p2.png)
+
+#### 5. Finite Difference Method
+
+Let's consider the first linear differential equation:
+
+$$
+y'' = y'+2y+\cos(x),\qquad \mathrm{for} ~~ 0 \le  x \le \frac{\pi}{2}
+$$
+
+To obtain approximate solutions using the finite difference method, we'll use a uniform grid with a step size of $h = (b-a)/N$ . The goal is to set up the finite difference method for this problem and express it as a tri-diagonal system of linear equations for $y_i$.
+
+Discretizing the domain, we choose $n$ and create a uniform grid:$h = \cfrac{b-a}{n},x_i = a+ih,i=0,1,2\cdots,n,x_0 = a= 0,x_n = b = \cfrac{\pi}{2}$.
+
+We then approximate the derivatives as follows:
+
+$$
+y'(x_{i})  \approx \frac{y_{i+1}-y_{i-1}}{2h},  \quad y''(x_{i})  \approx \frac{y_{i+1}-2 y_{i}+y_{i-1}}{h^{2}} 
+$$
+
+Plug these into the ODE results in:
+
+$$
+\frac{y_{i+1}-2 y_{i}+y_{i-1}}{h^{2}}  = \frac{y_{i+1}-y_{i-1}}{2h} +2y_i+\cos(x_i)
+$$
+
+for $i = 1,2,\cdots,n-1$, we can simplify this equation further:
+
+$$
+-(1+\frac{h}{2})y_{i-1}+(2+2h^2) y_{i}-(1-\frac{h}{2})y_{i+1} = -h^2\cos(x_i)
+$$
+
+Introducing new coefficients $a_i = -(1+\cfrac{h}{2}),d_i = 2+2h^2,c_i = -(1-\cfrac{h}{2}),b_i = -h^2\cos(x_i)$. we can express the discrete equations as: $a_{i} y_{i-1}+d_{i} y_{i}+c_{i} y_{i+1}=b_{i}$, for $i = 1,2,\cdots,n-1$.
+
+Considering the boundary conditions $y_0 = \alpha = -0.3, y_n = \beta = 0.1$, the first and last equation become:
+
+$$
+d_1y_1+c_1y_2 = b_1-a_1\alpha,\quad a_{n-1}y_2+d_ny_{n-1} = b_{n-1}-c_{n-1}\beta
+$$
+
+These equations lead to a tri-diagonal system of linear equations $A \vec{y}=\vec{b}$:
+
+$$
+\left[ \begin{array}{ccccc}{d_{1}} & {c_{1}} & { } & { } & { } \\ {a_{2}} & {d_{2}} & {c_{2}} & { } & { } \\ { } & {\ddots} & {\ddots} & {\ddots} & { } \\ { } & { } & {a_{n-2}} & {d_{n-2}} & {c_{n-2}} \\ { } & { } & { } & {a_{n-1}} & {d_{n-1}}\end{array}\right]
+\left[ \begin{array}{c}{y_{1}} \\ {y_{2}} \\ {\vdots} \\ {y_{n-2}} \\ {y_{n-1}}\end{array}\right] = \left[ \begin{array}{c}{b_{1}-a_{1} \alpha} \\ {b_{2}} \\ {\vdots}\\{b_{n-1}} \\ {b_{n-1}-c_{n-1} \beta}\end{array}\right]
+$$
+
+To visualize the solution of $y(x)$ and error $e(x)$ for $N = 10,20$. We can plot the graphs. It is evident that the error is smaller when $N=20$ compared to $N=10$.
+
+![Model 4: The result of Finite Difference Method](Math104%20B%20Final(1)/p3.png)
+
+#### 6. Conclusion
+
+In conclusion, we solve the Two-point Boundary Value Problem using the Shooting Method for both linear and nonlinear equations, as the problem cannot be solved directly. Both solutions converge, and we compare them with the exact solution. Additionally, we introduce a new method, the Finite Difference Method, which provides an easy solution for this problem.
